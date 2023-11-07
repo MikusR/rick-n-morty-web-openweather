@@ -1,0 +1,18 @@
+<h3>Episode {{ episode.id }}</h3>
+
+
+<a href="/">
+    Episode {{ episode.id }}. {{ episode.name }}
+
+</a>
+<div>Airdate: {{ episode.airdate }}</div>
+
+{% for character in episode.characters.list %}
+    <div>{{ character.name }}</div>
+    <img src="{{ character.image }}">
+
+    <br/>
+
+{% endfor %}
+<br/>
+
