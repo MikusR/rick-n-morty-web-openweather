@@ -19,6 +19,7 @@
     "symfony/var-dumper": "^5.4",
     "ext-json": "*",
     "symfony/debug-bundle": "^5.4",
-    "ext-xdebug": "*"
+    "ext-xdebug": "*",
+    "vlucas/phpdotenv": "^5.5"
   }
 }

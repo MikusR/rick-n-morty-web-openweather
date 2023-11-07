@@ -2,13 +2,13 @@
 
 namespace App;
 
-use App\Controllers\EpisodeController;
 use App\Models\EpisodeDb;
+use Carbon\Carbon;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
-use Symfony\Bridge\Twig\Extension\DumpExtension;
 use FastRoute;
+use Dotenv;
 
 class Application
 {
@@ -18,9 +18,18 @@ class Application
     {
         EpisodeDb::init();
 
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->safeLoad();;
+        $currentWeather = (new WeatherApi())->fetchWeather('Seoul');
+        $currentDate = Carbon::now()->setTimezone(
+            "+0" . $currentWeather->getTimezone() . ":00"
+        );//todo handle +- offsets also leading zero
+
         $loader = new FilesystemLoader(__DIR__ . '/../app/Views');
         $twig = new Environment($loader, ['debug' => true]);
         $twig->addExtension(new DebugExtension());
+        $twig->addGlobal('weather', $currentWeather);
+        $twig->addGlobal('date', $currentDate);
 
         {
             $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
